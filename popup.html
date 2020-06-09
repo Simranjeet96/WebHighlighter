@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <style>
+            .list-item__parent{
+            margin: 0;
+            padding:0;
+            width: 500;
+            list-style: none;
+            justify-content: space-around;
+            }
+            .list-item__parent > li:hover:not(.seperator){
+            background-color: rgb(0, 60, 255, 0.6);
+            }
+            .list-item__parent > li{
+            margin:0;
+            background-color:rgb(0, 0, 0, 0.6);
+            color: rgb(255, 255, 255);
+            padding: 2px 2px 2px 2px;
+            cursor: pointer;
+            font-size: 8px;
+            text-align: center;
+            }
+            .list-item__parent > .seperator{
+                cursor:default;
+                background-color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 style="text-align: center">Your Highlights</h2>
+        <script src=listener.js></script>
+    </body>
+</html>

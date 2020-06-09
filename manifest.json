@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name": "myWebHighlighter",
+    "version": "0.1",
+    "description":"highlights webpages with persistence",
+    "permissions": ["contextMenus","activeTab"],
+    "background": {
+        "persistent": true,
+        "scripts":["background.js"]
+      },
+      "content_scripts": [
+        {
+          "matches": ["http://*/*","https://*/*"],
+          "js": ["highlighter.js"],
+          "css":["contextMenuCss.css"]
+        }
+      ],
+      "browser_action": {
+        "default_popup": "popup.html"
+      }
+}  
