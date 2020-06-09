@@ -1,5 +1,3 @@
-/* Made by GodCreation on 07-06-2020 @ 04:47 am*/
-
 htmlString=`
 <div id="contextMenu" class="context-menu">
     <ul class="list-item__parent">
