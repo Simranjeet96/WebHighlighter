@@ -1,5 +1,3 @@
-/* Made by GodCreation on 07-06-2020 @ 04:47 am*/
-
 htmlString=`
 <div id="contextMenu" class="context-menu">
     <ul class="list-item__parent">
@@ -92,7 +90,7 @@ function deleteHighlighted(event){//click event
     }
     // and remove tags from local storage now
     tempDict=JSON.parse(window.localStorage.getItem(urlPath+"!!"+msg))
-    tempDict.toBeHighlighted=true;
+    tempDict.toNotBeHighlighted=true;
     window.localStorage.setItem(urlPath+"!!"+msg,JSON.stringify(tempDict));
     chrome.runtime.sendMessage({task: "delete",seq:msg});
 }
@@ -114,20 +112,20 @@ function generateNextSequence(){
 function processTextNodes(textNodes,startNode,endNode,startNodeHighlightPos,endNodeHighlightPos,restoring=false){
     if (restoring==true){
         sequence=SEQUENCE;
-        if(toBeHighlighted){
+        if(toNotBeHighlighted){
            color="transparent"; 
         }else{
             color="#ACCEF7"
         }
     }
     else{
-        toBeHighlighted=false;
+        toNotBeHighlighted=false;
         color="#ACCEF7"
     }
     if (startNode===endNode){
         spanTag=document.createElement("span");
         spanTag.setAttribute("style","background-color:"+color);
-        if(!toBeHighlighted)spanTag.addEventListener("contextmenu",highlightToggleAllSpanTagsWithSameCls);
+        if(!toNotBeHighlighted)spanTag.addEventListener("contextmenu",highlightToggleAllSpanTagsWithSameCls);
         spanTag.setAttribute("class",sequence );
         spanTag.appendChild(document.createTextNode(textNodes[0].nodeValue.substring(startNodeHighlightPos,endNodeHighlightPos)));
         beforeSpanTag=null;
@@ -151,7 +149,7 @@ function processTextNodes(textNodes,startNode,endNode,startNodeHighlightPos,endN
     
     spanTag=document.createElement("span");
     spanTag.setAttribute("style","background-color:"+color);
-    if(toBeHighlighted!=true)spanTag.addEventListener("contextmenu",highlightToggleAllSpanTagsWithSameCls);
+    if(toNotBeHighlighted!=true)spanTag.addEventListener("contextmenu",highlightToggleAllSpanTagsWithSameCls);
     spanTag.setAttribute("class",sequence )
     spanTag.appendChild(document.createTextNode(textNodes[0].nodeValue.substring(startNodeHighlightPos)));
     beforeSpanTag=document.createTextNode(textNodes[0].nodeValue.substring(0,startNodeHighlightPos));
@@ -160,7 +158,7 @@ function processTextNodes(textNodes,startNode,endNode,startNodeHighlightPos,endN
     for (i = 1, len = textNodes.length-1 ; i < len; i++) {
         spanTag=document.createElement("span");
         spanTag.setAttribute("style","background-color:"+color);
-        if(toBeHighlighted!=true)spanTag.addEventListener("contextmenu",highlightToggleAllSpanTagsWithSameCls);
+        if(toNotBeHighlighted!=true)spanTag.addEventListener("contextmenu",highlightToggleAllSpanTagsWithSameCls);
         spanTag.setAttribute("class",sequence )
         spanTag.appendChild(document.createTextNode(textNodes[i].nodeValue));
         textNodes[i].parentNode.insertBefore(spanTag,textNodes[i]);
@@ -168,7 +166,7 @@ function processTextNodes(textNodes,startNode,endNode,startNodeHighlightPos,endN
     if(textNodes.length>1){
         spanTag=document.createElement("span");
         spanTag.setAttribute("style","background-color:"+color);
-        if(toBeHighlighted!=true)spanTag.addEventListener("contextmenu",highlightToggleAllSpanTagsWithSameCls);
+        if(toNotBeHighlighted!=true)spanTag.addEventListener("contextmenu",highlightToggleAllSpanTagsWithSameCls);
         spanTag.setAttribute("class",sequence )
         spanTag.appendChild(document.createTextNode(textNodes[textNodes.length-1].nodeValue.substring(0,endNodeHighlightPos)));
         afterSpanTag=document.createTextNode(textNodes[textNodes.length-1].nodeValue.substring(endNodeHighlightPos));
@@ -187,7 +185,7 @@ function save(startNodeSavedParent,endNodeSavedParent,startNodeIndex,endNodeInde
         "ENHP":endNodeHighlightPos,
         "SNINDEX":startNodeIndex,
         "ENINDEX":endNodeIndex,
-        "toBeHighlighted":false
+        "toNotBeHighlighted":false
     };
     window.localStorage.setItem(urlPath+"!!"+sequence,JSON.stringify(dict));
 }
@@ -307,7 +305,7 @@ function restoreHighlights(){
             endNode=endNodeParentElement.childNodes[obj.ENINDEX];
             startNodeHighlightPos=obj.SNHP;
             endNodeHighlightPos=obj.ENHP;
-            toBeHighlighted=obj.toBeHighlighted;
+            toNotBeHighlighted=obj.toNotBeHighlighted;
             nativeTreeWalker(startNode,endNode);
             processTextNodes(textNodes,startNode,endNode,startNodeHighlightPos,endNodeHighlightPos,true);
         }
